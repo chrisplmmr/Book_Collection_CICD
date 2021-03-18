@@ -1,7 +1,8 @@
 env:
   RUBY_VERSION: 3.0.0
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: ""
+  DATABASE_URL: postgres://postgres:@localhost:5432/bookcollection_christopher_plummer_test
+  POSTGRES_USER: chrisplmmr
+  POSTGRES_PASSWORD: "cpadmin"
   POSTGRES_DB: postgres
 
 name: CI/CD
@@ -35,6 +36,9 @@ jobs:
         ports:
         - 5432:5432
     steps:
+      - uses: borales/actions-yarn@v2.3.0
+        with: 
+          cmd: install
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
         with:
