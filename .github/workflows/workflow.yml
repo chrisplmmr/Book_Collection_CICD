@@ -21,7 +21,6 @@ jobs:
       - name: Check code
         run: rubocop
 
-job:
    rspec-test:
     name: RSpec
     needs: rubocop-test
