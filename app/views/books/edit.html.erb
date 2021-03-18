@@ -1,0 +1,42 @@
+<%= link_to("<< Back to Home", books_path, :class => 'back-link')%>
+
+<div class="book edit">
+    <h2>Edit Book Info</h2>
+
+    <%= form_for(@book) do |f| %>
+
+        <table summary="Book from fields">
+            <tr>
+                <th><%= f.label :title %></th>
+                <td><%= f.text_field(:title) %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :author %></th>
+                <td><%= f.text_field(:author) %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :genre %></th>
+                <td><%= f.select :genre, [['Fiction', 'Fiction'], ['Non-fiction', 'Non-Fiction'], ['Sci-Fi', 'Sci-Fi'], ['Romance', 'Romance'], ['Drama', 'Drama']]%></td>
+            </tr>
+            <tr>
+                <th><%= f.label :price %></th>
+                <td><%= f.text_field(:price)%></td>
+            </tr>
+            <tr>
+                <th><%= f.label :published_date %></th>
+                <td><%= f.date_select(:published_date, start_year: 1990, order: [:month, :day, :year])%></td>
+            </tr>
+        </table>
+
+        <div class="form-buttons">
+            <%= f.submit("Edit Book") %>
+        </div>
+
+    <% end %>
+</div>
+
+<% flash.each do |type, msg| %>
+  <div>
+    <%= msg %>
+  </div>
+<% end %>

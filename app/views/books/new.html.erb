@@ -1,0 +1,42 @@
+<%= link_to("<< Back to Home", books_path, :class => 'back-link')%>
+
+<div class="books new">
+    <h2>Book Creation</h2>
+
+    <%= form_for(@book, :url => books_path, :method => 'post') do |f| %>
+
+        <table summary="Book detail view">
+            <tr>
+                <th><%= f.label :title %></th>
+                <td><%= f.text_field(:title) %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :author %></th>
+                <td><%= f.text_field(:author) %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :genre %></th>
+                <td><%= f.select :genre, [['Fiction', 'Fiction'], ['Non-fiction', 'Non-Fiction'], ['Sci-Fi', 'Sci-Fi'], ['Romance', 'Romance'], ['Drama', 'Drama']]%></td>
+            </tr>
+            <tr>
+                <th><%= f.label :price %></th>
+                <td><%= f.text_field(:price)%></td>
+            </tr>
+            <tr>
+                <th><%= f.label :published_date %></th>
+                <td><%= f.date_select(:published_date, start_year: 1990, order: [:month, :day, :year])%></td>
+            </tr>
+        </table>
+
+        <div class="form-buttons">
+            <%= f.submit("Create Book") %>
+        </div>
+
+    <% end %>
+</div>
+
+<% flash.each do |type, msg| %>
+  <div>
+    <%= msg %>
+  </div>
+<% end %>

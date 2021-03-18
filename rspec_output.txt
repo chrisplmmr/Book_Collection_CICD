@@ -1,0 +1,42 @@
+
+Book Creation Acceptance
+Capybara starting Puma...
+* Version 5.2.0 , codename: Fettisdagsbulle
+* Min threads: 0, max threads: 4
+* Listening on http://127.0.0.1:52882
+.  creating a new book by accpetance criteria
+
+Book Creation
+.  adding a new book with valid fields
+.  adding a new book with invalid fields
+
+Book Show
+.  visiting a books information
+
+Book Update
+.  completing an update of a book
+
+Book Delete
+.  deleting a book from the list of avail books
+
+Book Stub
+  request list of all books
+.    can be routed to
+
+Book Model Validations
+  unit model tests
+.    ensures title is present
+.    ensures author is present
+.    ensures genre is present
+.    ensures price boolean is present
+.    ensures published date boolean is present
+.    should save successfully
+
+
+Finished in 10.46 seconds (files took 23.54 seconds to load)
+13 examples, 0 failures
+
+Finished in 10.46 seconds (files took 23.54 seconds to load)
+13 examples, 0 failures
+
+

@@ -1,0 +1,38 @@
+<%= link_to("<< Back to Home", books_path, :class => 'back-link') %>
+
+<div class="books show">
+    <h2>Book Info</h2>
+      
+    <table summary="Book detail view">
+        <tr>
+            <th>ID</th>
+            <td><%= @book.id %></td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td><%= @book.title%></td>
+        </tr>
+        <tr>
+            <th>Author</th>
+            <td><%= @book.author%></td>
+        </tr>
+        <tr>
+            <th>Genre</th>
+            <td><%= @book.genre %></td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td><%= @book.price %></td>
+        </tr>
+        <tr>
+            <th>Published Date</th>
+            <td><%= @book.published_date %></td>
+        </tr>
+    </table>
+</div>
+
+<% flash.each do |type, msg| %>
+  <div>
+    <%= msg %>
+  </div>
+<% end %>
