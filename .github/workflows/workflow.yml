@@ -36,9 +36,6 @@ jobs:
         ports:
         - 5432:5432
     steps:
-      - uses: borales/actions-yarn@v2.3.0
-        with: 
-          cmd: install
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
         with:
