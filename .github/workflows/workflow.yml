@@ -26,7 +26,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       chrome:
-        image: selenium/standalone-chrome:3.141.59-zirconium # this version should match that of the selenium-webdriver gem
+        image: selenium/standalone-chrome:3.141.5926-zirconium # this version should match that of the selenium-webdriver gem
         env:
           HUB_URL: http://chrome:4444/wd/hub
         volumes:
@@ -41,12 +41,6 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
-      - uses: actions/cache@v1
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
       - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: install
