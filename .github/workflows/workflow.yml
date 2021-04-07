@@ -14,11 +14,12 @@ jobs:
     services:
       db:
         image: postgres:13
-        ports: ["5432:5432"]
         env:
           POSTGRES_USER: chrisplum
           POSTGRES_PASSWORD: 'cpadmin'
           host: localhost
+        ports:
+        - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -39,11 +40,12 @@ jobs:
           cmd: install
       - name: Run Tests
         env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/bookcollection_christopher_plummer_test
-          REDIS_URL: redis://localhost:6379/0
-          RAILS_ENV: test
           POSTGRES_USER: chrisplum
           POSTGRES_PASSWORD: 'cpadmin'
+          POSTGRES_DB: bookcollection_christopher_plummer_test
+          host: localhost
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
         run: |
           sudo apt-get -yqq install libpq-dev
           gem install bundler
