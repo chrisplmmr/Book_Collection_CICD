@@ -9,61 +9,44 @@ name: CI/CD
 on: [push,pull_request]
 
 jobs:
-  rubocop-test:
-    name: Rubocop
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-      - name: Install Rubocop
-        run: | 
-          gem install rubocop
-          gem install rubocop-performance
-          gem install rubocop-rails
-          gem install rubocop-rspec
-      - name: Check code
-        run: rubocop
-
-  rspec-test:
-    name: RSpec
-    needs: rubocop-test
+  build:
     runs-on: ubuntu-latest
     services:
-      postgres:
+      db:
         image: postgres:13
+        ports: ["5432:5432"]
         env:
           POSTGRES_USER: chrisplum
           POSTGRES_PASSWORD: 'cpadmin'
-        ports:
-        - 5432:5432
-    steps:
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports: ["6379:6379"]
+        options: --entrypoint redis-server
+      steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-ruby@v1
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
-      - uses: nanasess/setup-chromedriver@master
-      - uses: borales/actions-yarn@v2.3.0
+      - uses: borales/actions-yarn@v2.0.0
         with:
           cmd: install
-      - name: Install postgres client
-        run: sudo apt-get install libpq-dev
-      - name: Install dependencies
+      - name: Run Tests
+        env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/bookcollection_christopher_plummer_test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+          POSTGRES_USER: chrisplum
+          POSTGRES_PASSWORD: 'cpadmin'
         run: |
-          gem install capybara
-          gem install selenium-webdriver
-          gem install webdrivers
-          bundler install
-      - name: Create database
-        run: |
-          bundler exec rails db:create RAILS_ENV=test
-          bundler exec rails db:migrate RAILS_ENV=test
-      - name: Run tests
-        run: bundler exec rspec
-      - name: Upload coverage results    
-        uses: actions/upload-artifact@master
-        if: always()
-        with:
-          name: coverage-report
-          path: coverage  
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+          bundle exec rspec .
