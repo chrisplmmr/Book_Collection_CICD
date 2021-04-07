@@ -1,9 +1,9 @@
-envi:
+env:
   RUBY_VERSION: 3.0.0
-  DATABASE_URL: postgres://postgres:@localhost:5432/bookcollection_christopher_plummer_test
   POSTGRES_USER: chrisplum
   POSTGRES_PASSWORD: 'cpadmin'
   POSTGRES_DB: bookcollection_christopher_plummer_test
+  host: localhost
 
 name: CI/CD
 on: [push,pull_request]
@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
         with:
-          ruby-version: ${{ envi.RUBY_VERSION }}
+          ruby-version: ${{ env.RUBY_VERSION }}
       - name: Install Rubocop
         run: | 
           gem install rubocop
@@ -34,17 +34,15 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/bookcollection_christopher_plummer_test
-          POSTGRES_USER: chrisplmmr
+          POSTGRES_USER: chrisplum
           POSTGRES_PASSWORD: 'cpadmin'
-          POSTGRES_DB: bookcollection_christopher_plummer_test
         ports:
         - 5432:5432
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
         with:
-          ruby-version: ${{ envi.RUBY_VERSION }}
+          ruby-version: ${{ env.RUBY_VERSION }}
       - name: Install postgres client
         run: sudo apt-get install libpq-dev
       - name: Install dependencies
