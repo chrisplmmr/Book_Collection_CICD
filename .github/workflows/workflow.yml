@@ -26,7 +26,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       chrome:
-        image: selenium/standalone-chrome:3.141.5926-zirconium # this version should match that of the selenium-webdriver gem
+        image: selenium/standalone-chrome:3.141.59-zirconium # this version should match that of the selenium-webdriver gem
         env:
           HUB_URL: http://chrome:4444/wd/hub
         volumes:
