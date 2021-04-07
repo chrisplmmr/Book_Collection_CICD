@@ -38,8 +38,6 @@ jobs:
       - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: install
-      - name: Fix Webdriver
-        run: sudo apt-get -yqq install chromium-chromedriver
       - name: Run Tests
         env:
           POSTGRES_USER: chrisplum
@@ -50,6 +48,7 @@ jobs:
           RAILS_ENV: test
         run: |
           sudo apt-get -yqq install libpq-dev
+          sudo apt-get -yqq install chromium-chromedriver
           gem install bundler
           bundle install --jobs 4 --retry 3
           bundle exec rake db:create
