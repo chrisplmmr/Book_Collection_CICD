@@ -18,6 +18,7 @@ jobs:
         env:
           POSTGRES_USER: chrisplum
           POSTGRES_PASSWORD: 'cpadmin'
+          host: localhost
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -43,7 +44,6 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: chrisplum
           POSTGRES_PASSWORD: 'cpadmin'
-          host: localhost
         run: |
           sudo apt-get -yqq install libpq-dev
           gem install bundler
