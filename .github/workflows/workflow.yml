@@ -9,7 +9,25 @@ name: CI/CD
 on: [push,pull_request]
 
 jobs:
-  build:
+  rubocop-test:
+    name: Rubocop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Install Rubocop
+        run: | 
+          gem install rubocop
+          gem install rubocop-performance
+          gem install rubocop-rails
+          gem install rubocop-rspec
+      - name: Check code
+        run: rubocop
+
+  rspec-tests:
+    name: RSpec
     runs-on: ubuntu-latest
     services:
       db:
