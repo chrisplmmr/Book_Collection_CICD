@@ -1,9 +1,9 @@
 env:
   RUBY_VERSION: 3.0.0
   DATABASE_URL: postgres://postgres:@localhost:5432/bookcollection_christopher_plummer_test
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: ""
-  POSTGRES_DB: postgres
+  POSTGRES_USER: chrisplum
+  POSTGRES_PASSWORD: 'cpadmin'
+  POSTGRES_DB: bookcollection_christopher_plummer_test
 
 name: CI/CD
 on: [push,pull_request]
@@ -35,6 +35,9 @@ jobs:
         image: postgres:13
         ports:
         - 5432:5432
+      env:
+        POSTGRES_USER: ${{ env.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
@@ -51,7 +54,7 @@ jobs:
           bundler exec rails db:create RAILS_ENV=test
           bundler exec rails db:migrate RAILS_ENV=test
       - name: Run tests
-        run: bundler exec rake
+        run: bundler exec rspec
       - name: Upload coverage results    
         uses: actions/upload-artifact@master
         if: always()
