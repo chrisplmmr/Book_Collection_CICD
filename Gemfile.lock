@@ -257,7 +257,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   sass-rails (>= 6)
-  selenium-webdriver (~> 3.141.59)
+  selenium-webdriver
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)

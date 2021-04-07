@@ -52,7 +52,7 @@ group :development do
 end
 
 group :test do
-  gem 'selenium-webdriver', '~> 3.141.59'
+  gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
 end
 
