@@ -47,6 +47,8 @@ jobs:
         run: sudo apt-get install libpq-dev
       - name: Install dependencies
         run: |
+          gem install capybara
+          gem install selenium-webdriver
           gem install webdrivers
           bundler install
       - name: Create database
