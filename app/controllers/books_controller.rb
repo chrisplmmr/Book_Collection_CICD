@@ -9,7 +9,7 @@ class BooksController < ApplicationController
   # Find book for template
   def show
     @book = Book.find(params[:id])
-    flash[:alert] = 'Notice: Book Shown Successfully'
+    flash[:alert] = 'Notice: Book Shown Successfully.'
   end
 
   # Form for create

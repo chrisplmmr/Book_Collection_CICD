@@ -1,0 +1,79 @@
+env:
+  RUBY_VERSION: 3.0.0
+  POSTGRES_USER: chrisplum
+  POSTGRES_PASSWORD: 'cpadmin'
+  POSTGRES_DB: bookcollection_christopher_plummer_test
+  host: localhost
+
+name: CI/CD
+on: [push,pull_request]
+
+jobs:
+  rubocop-test:
+    name: Rubocop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Install Rubocop
+        run: | 
+          gem install rubocop
+          gem install rubocop-performance
+          gem install rubocop-rails
+          gem install rubocop-rspec
+      - name: Check code
+        run: rubocop
+
+  rspec-tests:
+    name: RSpec
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:13
+        env:
+          POSTGRES_USER: chrisplum
+          POSTGRES_PASSWORD: 'cpadmin'
+          host: localhost
+        ports:
+        - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      chrome:
+        image: selenium/standalone-chrome:3.141.59-zirconium # this version should match that of the selenium-webdriver gem
+        env:
+          HUB_URL: http://chrome:4444/wd/hub
+        volumes:
+          - /dev/shm:/dev/shm
+      redis:
+        image: redis
+        ports: ["6379:6379"]
+        options: --entrypoint redis-server
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: install
+      - name: Run Tests
+        env:
+          POSTGRES_USER: chrisplum
+          POSTGRES_PASSWORD: 'cpadmin'
+          POSTGRES_DB: bookcollection_christopher_plummer_test
+          host: localhost
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+          bundle exec rspec .
