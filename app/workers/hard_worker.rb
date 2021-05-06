@@ -1,8 +1,7 @@
 class HardWorker
   include Sidekiq::Worker
 
-  def perform(client_email, message)
+  def perform(_client_email, _message)
     # Send the mail
-    puts 'FUCK LOL'
   end
 end
